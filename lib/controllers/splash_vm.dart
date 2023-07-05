@@ -1,0 +1,16 @@
+import 'package:freechoice_music/pages/home.dart';
+import 'package:get/get.dart';
+
+class SplashVM extends GetxController {
+
+  @override
+  void onInit() {
+    super.onInit();
+    skipToHome();
+  }
+
+  Future<void> skipToHome() async {
+    await Future.delayed(Duration(seconds: 3));
+    Get.off(() => const HomePage());
+  }
+}
