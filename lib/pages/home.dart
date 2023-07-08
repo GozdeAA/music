@@ -78,12 +78,15 @@ class HomePage extends StatelessWidget {
         children: [
           customIcon("skip_previous",
               onPressed: () => vm.testplay(PlayType.previous)),
-          customIcon("pre", ),
-          Obx(() => AnimatedSwitcher(
-                duration: const Duration(milliseconds: 10000),
-                child: vm.playButton.value,
-              )),
-          customIcon("next", ),
+          customIcon("pre", onPressed: () => vm.pre10Seconds()),
+          AnimatedSwitcher(
+            reverseDuration: const Duration(seconds: 5),
+            duration: const Duration(seconds: 5),
+            switchInCurve: Curves.bounceInOut,
+            switchOutCurve: Curves.easeOutCirc,
+            child: Obx(() => customButton(vm.playButton.value, vm)),
+          ),
+          customIcon("next", onPressed: () => vm.next10Seconds()),
           customIcon("skip_next", onPressed: () => vm.testplay(PlayType.next)),
         ],
       ),
@@ -91,25 +94,36 @@ class HomePage extends StatelessWidget {
   }
 
 
-
-  Flexible playButton(HomeVM vm) {
-    return Flexible(
-        child: GestureDetector(
-            child: SvgPicture.asset("assets/images/icons/play.svg",height: 24.sp,),
-            onTap: () {
-              vm.testplay(PlayType.current);
-              vm.playButton.value = pauseButton(vm);
-            }));
+  Widget customButton(bool play, vm) {
+    if (play) {
+      return playButton(vm);
+    } else {
+      return pauseButton(vm);
+    }
   }
 
-  Flexible pauseButton(HomeVM vm) {
-    return Flexible(
-        child: GestureDetector(
-            child: SvgPicture.asset("assets/images/icons/pause.svg",height: 24.sp,),
-            onTap: () {
-              vm.player.pause();
-              vm.playButton.value = playButton(vm);
-            }));
+  Widget playButton(HomeVM vm) {
+    return GestureDetector(
+        child: SvgPicture.asset(
+          "assets/images/icons/play.svg",
+          height: 24.sp,
+        ),
+        onTap: () {
+          vm.testplay(PlayType.current);
+          vm.playButton.value = false;
+        });
+  }
+
+  Widget pauseButton(HomeVM vm) {
+    return GestureDetector(
+        child: SvgPicture.asset(
+          "assets/images/icons/pause.svg",
+          height: 24.sp,
+        ),
+        onTap: () {
+          vm.player.pause();
+          vm.playButton.value = true;
+        });
   }
 
   Flexible customIcon(String assetName,

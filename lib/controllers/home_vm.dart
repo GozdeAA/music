@@ -1,7 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:card_swiper/card_swiper.dart';
-import 'package:flutter/material.dart';
-import 'package:freechoice_music/pages/home.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
@@ -11,13 +9,15 @@ class HomeVM extends GetxController {
   SwiperController swiperController = SwiperController();
   AudioPlayer player = AudioPlayer();
   RxList<SongModel> files = <SongModel>[].obs;
-  Rx<Widget> playButton = Rx<Widget>(const SizedBox());
+
+  //Rx<Widget> playButton = Rx<Widget>(const SizedBox());
   RxInt currentIndex = 0.obs;
+  RxBool playButton = true.obs;
   final OnAudioQuery _audioQuery = OnAudioQuery();
 
   @override
   void onInit() {
-    playButton.value = const HomePage().playButton(this);
+    // playButton.value = const HomePage().playButton(this);
     super.onInit();
   }
 
@@ -40,21 +40,35 @@ class HomeVM extends GetxController {
     printInfo(info: "bulunan dosya sayısı: ${files.length}");
   }
 
+  next10Seconds() async {
+    Duration? dur = await player.getCurrentPosition();
+    if (dur != null) player.seek(const Duration(seconds: 10) + dur);
+  }
+
+  pre10Seconds() async {
+    Duration? dur = await player.getCurrentPosition();
+    if (dur != null && dur.compareTo(const Duration(seconds: 10)) > 0) {
+      player.seek(dur - const Duration(seconds: 10));
+    } else {
+      player.seek(const Duration(seconds: 0));
+    }
+  }
+
   testplay(PlayType p, {int? i}) async {
     try {
       //files.shuffle();
       if (p == PlayType.next) {
-        playButton.value = const HomePage().pauseButton(this);
+        playButton.value = false;
         await player
             .play(DeviceFileSource(files[(i ?? currentIndex.value) + 1].data));
         swiperController.next();
       } else if (p == PlayType.previous) {
-        playButton.value = const HomePage().pauseButton(this);
+        playButton.value = false;
         await player
             .play(DeviceFileSource(files[(i ?? currentIndex.value) - 1].data));
         swiperController.previous();
       } else {
-        playButton.value = const HomePage().pauseButton(this);
+        playButton.value = false;
         await player
             .play(DeviceFileSource(files[i ?? currentIndex.value].data));
       }
