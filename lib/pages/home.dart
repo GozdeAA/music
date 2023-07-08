@@ -1,8 +1,8 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:freechoice_music/controllers/home_vm.dart';
 import 'package:freechoice_music/utilities/extensions/sizer.dart';
-import 'package:freechoice_music/utilities/themes/light_theme.dart';
 import 'package:freechoice_music/utilities/widgets/custom_widget/background_grad.dart';
 import 'package:get/get.dart';
 import '../utilities/enums.dart';
@@ -42,8 +42,7 @@ class HomePage extends StatelessWidget {
                       padding: EdgeInsets.all(1.h),
                       decoration: const BoxDecoration(
                           color: Colors.white,
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(20))),
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -77,59 +76,53 @@ class HomePage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          //customIcon(Icons.shuffle, size: 20.sp),
-          customIcon(Icons.skip_previous_rounded,
+          customIcon("skip_previous",
               onPressed: () => vm.testplay(PlayType.previous)),
-          Obx(() => vm.playButton.value),
-          customIcon(Icons.skip_next,
-              onPressed: () => vm.testplay(PlayType.next)),
-          //  customIcon(Icons.loop, size: 20.sp)
+          customIcon("pre", ),
+          Obx(() => AnimatedSwitcher(
+                duration: const Duration(milliseconds: 10000),
+                child: vm.playButton.value,
+              )),
+          customIcon("next", ),
+          customIcon("skip_next", onPressed: () => vm.testplay(PlayType.next)),
         ],
       ),
     );
   }
 
+
+
   Flexible playButton(HomeVM vm) {
     return Flexible(
-        child: IconButton(
-            icon: Icon(
-              Icons.play_arrow,
-              color: LightTheme().darkerIconColor?.withOpacity(0.8),
-              size: 28.sp,
-            ),
-            onPressed: () {
+        child: GestureDetector(
+            child: SvgPicture.asset("assets/images/icons/play.svg",height: 24.sp,),
+            onTap: () {
               vm.testplay(PlayType.current);
-              vm.playButton.value= pauseButton(vm);
+              vm.playButton.value = pauseButton(vm);
             }));
   }
 
   Flexible pauseButton(HomeVM vm) {
     return Flexible(
-        child: IconButton(
-            icon: Icon(
-              Icons.pause,
-              color: LightTheme().darkerIconColor?.withOpacity(0.8),
-              size: 28.sp,
-            ),
-            onPressed: () {
+        child: GestureDetector(
+            child: SvgPicture.asset("assets/images/icons/pause.svg",height: 24.sp,),
+            onTap: () {
               vm.player.pause();
-              vm.playButton.value= playButton(vm);
-
+              vm.playButton.value = playButton(vm);
             }));
   }
 
-  //iconlar değişecek
-  Flexible customIcon(IconData iconData,
-      {VoidCallback? onPressed, int? flex, double? size}) {
+  Flexible customIcon(String assetName,
+      {VoidCallback? onPressed, int? flex, double? size, double? grade}) {
     return Flexible(
       flex: flex ?? 1,
-      child: IconButton(
-          onPressed: onPressed ?? () {},
-          icon: Icon(
-            iconData,
-            color: LightTheme().darkerIconColor?.withOpacity(0.8),
-            size: size ?? 28.sp,
-          )),
+      child: GestureDetector(
+        onTap: onPressed ?? () {},
+        child: SvgPicture.asset(
+          "assets/images/icons/$assetName.svg",
+          height: size ?? 24.sp,
+        ),
+      ),
     );
   }
 }

@@ -7,8 +7,6 @@ import 'package:on_audio_query/on_audio_query.dart';
 
 import '../utilities/enums.dart';
 
-//TODO player icon durumu göre değişecek, gerekirse buton olarak ayır state e göre
-
 class HomeVM extends GetxController {
   SwiperController swiperController = SwiperController();
   AudioPlayer player = AudioPlayer();
@@ -16,7 +14,6 @@ class HomeVM extends GetxController {
   Rx<Widget> playButton = Rx<Widget>(const SizedBox());
   RxInt currentIndex = 0.obs;
   final OnAudioQuery _audioQuery = OnAudioQuery();
-
 
   @override
   void onInit() {
@@ -40,7 +37,7 @@ class HomeVM extends GetxController {
 
   Future getFiles() async {
     files.value = await _audioQuery.querySongs();
-    print(files.length);
+    printInfo(info: "bulunan dosya sayısı: ${files.length}");
   }
 
   testplay(PlayType p, {int? i}) async {

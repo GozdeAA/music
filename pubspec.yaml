@@ -18,7 +18,7 @@ dependencies:
   path_provider:
   card_swiper: ^2.0.4 #kaldırılabilir
   on_audio_query: ^2.9.0
-
+  flutter_svg: ^2.0.5
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
@@ -33,10 +33,10 @@ flutter:
 
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+
+  assets:
+    - assets/images/
+    - assets/images/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -53,12 +53,12 @@ flutter:
     - family: Abril
       fonts:
         - asset: assets/fonts/abrilFatFace.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+    #       - asset: fonts/Schyler-Italic.ttf
+    #         style: italic
     - family: YsabeauInfant
       fonts:
-      - asset: assets/fonts/YsabeauInfant-r.ttf
-      - asset: assets/fonts/YsabeauInfant-sbold.ttf
+        - asset: assets/fonts/YsabeauInfant-r.ttf
+        - asset: assets/fonts/YsabeauInfant-sbold.ttf
   #         weight: 700
   #
   # For details regarding fonts from package dependencies,
