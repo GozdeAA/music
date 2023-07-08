@@ -9,15 +9,12 @@ class HomeVM extends GetxController {
   SwiperController swiperController = SwiperController();
   AudioPlayer player = AudioPlayer();
   RxList<SongModel> files = <SongModel>[].obs;
-
-  //Rx<Widget> playButton = Rx<Widget>(const SizedBox());
   RxInt currentIndex = 0.obs;
   RxBool playButton = true.obs;
   final OnAudioQuery _audioQuery = OnAudioQuery();
 
   @override
   void onInit() {
-    // playButton.value = const HomePage().playButton(this);
     super.onInit();
   }
 

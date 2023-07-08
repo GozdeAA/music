@@ -10,6 +10,8 @@ import '../utilities/enums.dart';
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
+  //TODO fix animated switcher
+
   @override
   Widget build(BuildContext context) {
     var vm = Get.put(HomeVM());
@@ -72,27 +74,39 @@ class HomePage extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(70), topRight: Radius.circular(70))),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          customIcon("skip_previous",
-              onPressed: () => vm.testplay(PlayType.previous)),
-          customIcon("pre", onPressed: () => vm.pre10Seconds()),
-          AnimatedSwitcher(
-            reverseDuration: const Duration(seconds: 5),
-            duration: const Duration(seconds: 5),
-            switchInCurve: Curves.bounceInOut,
-            switchOutCurve: Curves.easeOutCirc,
-            child: Obx(() => customButton(vm.playButton.value, vm)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              customIcon("skip_previous",
+                  onPressed: () => vm.testplay(PlayType.previous)),
+              customIcon("pre", onPressed: () => vm.pre10Seconds()),
+              AnimatedSwitcher(
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return ScaleTransition(scale: animation, child: child);
+                },
+                reverseDuration: const Duration(seconds: 5),
+                duration: const Duration(seconds: 5),
+                switchInCurve: Curves.bounceInOut,
+                switchOutCurve: Curves.easeOutCirc,
+                child: Obx(() => customButton(vm.playButton.value, vm)),
+              ),
+              customIcon("next", onPressed: () => vm.next10Seconds()),
+              customIcon("skip_next",
+                  onPressed: () => vm.testplay(PlayType.next)),
+            ],
           ),
-          customIcon("next", onPressed: () => vm.next10Seconds()),
-          customIcon("skip_next", onPressed: () => vm.testplay(PlayType.next)),
+          SizedBox(
+            height: 0.5.h,
+          ),
         ],
       ),
     );
   }
-
 
   Widget customButton(bool play, vm) {
     if (play) {
