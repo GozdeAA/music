@@ -11,6 +11,7 @@ class HomeVM extends GetxController {
   RxList<SongModel> files = <SongModel>[].obs;
   RxInt currentIndex = 0.obs;
   RxBool playButton = true.obs;
+  RxString currentSongName = "".obs;
   final OnAudioQuery _audioQuery = OnAudioQuery();
 
   @override
@@ -58,16 +59,19 @@ class HomeVM extends GetxController {
         playButton.value = false;
         await player
             .play(DeviceFileSource(files[(i ?? currentIndex.value) + 1].data));
+        currentSongName.value = files[i ?? currentIndex.value].title;
         swiperController.next();
       } else if (p == PlayType.previous) {
         playButton.value = false;
         await player
             .play(DeviceFileSource(files[(i ?? currentIndex.value) - 1].data));
+        currentSongName.value = files[i ?? currentIndex.value].title;
         swiperController.previous();
       } else {
         playButton.value = false;
         await player
             .play(DeviceFileSource(files[i ?? currentIndex.value].data));
+        currentSongName.value = files[i ?? currentIndex.value].title;
       }
     } catch (e) {
       printError();

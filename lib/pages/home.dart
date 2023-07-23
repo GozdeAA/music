@@ -16,55 +16,71 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     var vm = Get.put(HomeVM());
     return Scaffold(
-        body: Stack(
-      alignment: Alignment.topCenter,
-      children: [
-        const BackgroundGrad(colors: [Color(0xff6109AF), Color(0xff130023)]),
-        Column(
-          children: [
-            SizedBox(
-              //nereden çalındıgı yazsın, çalma listesi mesela veya klasör
-              height: 15.h, //appbar olacak
-            ),
-            Obx(
-              () => SizedBox(
-                height: 50.h,
-                child: Swiper(
-                  onIndexChanged: (i) {
-                    if (vm.files.isNotEmpty) {
-                      vm.currentIndex.value = i;
-                      //vm.checkPlayingStatus();
-                      vm.testplay(i: i, PlayType.current);
-                    }
-                  },
-                  loop: false,
-                  controller: vm.swiperController,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      padding: EdgeInsets.all(1.h),
-                      decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(20))),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(vm.files[index].title),
-                          Text(vm.files[index].artist ?? ""),
-                        ],
-                      ),
-                    );
-                  },
-                  itemCount: vm.files.length,
-                  viewportFraction: 0.8,
-                  scale: 0.9,
-                ),
-              ),
-            )
-          ],
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          centerTitle: true,
+          automaticallyImplyLeading: true,
+          title: Obx(() => Text(
+                "Yerel kitaplıktan çalınıyor\n${vm.currentSongName.value}",
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                style: TextStyle(color: Colors.white, fontSize: 15.sp),
+                textAlign: TextAlign.center,
+              )),
+          elevation: 0,
+          backgroundColor: Colors.white.withOpacity(0),
         ),
-        Align(alignment: Alignment.bottomCenter, child: playArea(vm))
-      ],
-    ));
+        body: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            const BackgroundGrad(
+                colors: [Color(0xff6109AF), Color(0xff130023)]),
+            Column(
+              children: [
+                SizedBox(
+                  //nereden çalındıgı yazsın, çalma listesi mesela veya klasör
+                  height: 15.h, //appbar olacak
+                ),
+                Obx(
+                  () => SizedBox(
+                    height: 50.h,
+                    child: Swiper(
+                      onIndexChanged: (i) {
+                        if (vm.files.isNotEmpty) {
+                          vm.currentIndex.value = i;
+                          //vm.checkPlayingStatus();
+                          vm.testplay(i: i, PlayType.current);
+                        }
+                      },
+                      loop: false,
+                      controller: vm.swiperController,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          padding: EdgeInsets.all(1.h),
+                          decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(vm.files[index].title),
+                              Text(vm.files[index].artist ?? ""),
+                            ],
+                          ),
+                        );
+                      },
+                      itemCount: vm.files.length,
+                      viewportFraction: 0.8,
+                      scale: 0.9,
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Align(alignment: Alignment.bottomCenter, child: playArea(vm))
+          ],
+        ));
   }
 
   Container playArea(HomeVM vm) {
