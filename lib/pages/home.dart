@@ -2,10 +2,12 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:freechoice_music/controllers/home_vm.dart';
+import 'package:freechoice_music/pages/song_list.dart';
 import 'package:freechoice_music/utilities/extensions/sizer.dart';
 import 'package:freechoice_music/utilities/widgets/custom_widget/background_grad.dart';
 import 'package:get/get.dart';
-import '../utilities/enums.dart';
+import '../utilities/constants/consts.dart';
+import '../utilities/constants/enums.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -20,12 +22,22 @@ class HomePage extends StatelessWidget {
         appBar: AppBar(
           centerTitle: true,
           automaticallyImplyLeading: true,
-          title: Obx(() => Text(
-                "Yerel kitaplıktan çalınıyor\n${vm.currentSongName.value}",
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                style: TextStyle(color: Colors.white, fontSize: 15.sp),
-                textAlign: TextAlign.center,
+          title: Obx(() => Row(
+                children: [
+                  Text(
+                    "Yerel kitaplıktan çalınıyor\n${vm.currentSongName.value}",
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: TextStyle(color: Colors.white, fontSize: 15.sp),
+                    textAlign: TextAlign.center,
+                  ),
+                  IconButton(
+                      onPressed: () {Get.to(() => const SongListPage());},
+                      icon: Icon(
+                        Icons.menu_outlined,
+                        color: colors.primary,
+                      ))
+                ],
               )),
           elevation: 0,
           backgroundColor: Colors.white.withOpacity(0),

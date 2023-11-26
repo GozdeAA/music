@@ -3,7 +3,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-import '../utilities/enums.dart';
+import '../utilities/constants/enums.dart';
 
 class HomeVM extends GetxController {
   SwiperController swiperController = SwiperController();
