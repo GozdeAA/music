@@ -23,6 +23,7 @@ class HomePage extends StatelessWidget {
           centerTitle: true,
           automaticallyImplyLeading: true,
           title: Obx(() => Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     "Yerel kitaplıktan çalınıyor\n${vm.currentSongName.value}",

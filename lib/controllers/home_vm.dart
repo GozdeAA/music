@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../utilities/constants/enums.dart';
 
@@ -15,7 +16,8 @@ class HomeVM extends GetxController {
   final OnAudioQuery _audioQuery = OnAudioQuery();
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
+    await askPermission();
     super.onInit();
   }
 
@@ -33,8 +35,18 @@ class HomeVM extends GetxController {
     super.onClose();
   }
 
+  askPermission() async {
+    var storage = await Permission.storage.request();
+    var library = await Permission.mediaLibrary.request();
+    //ilgi other permissions can be added
+
+    if (storage.isPermanentlyDenied || library.isPermanentlyDenied) {
+      await openAppSettings();
+    }
+  }
+
   Future getFiles() async {
-    files.value = await _audioQuery.querySongs();
+  //  files.value = await _audioQuery.querySongs();
     printInfo(info: "bulunan dosya sayısı: ${files.length}");
   }
 

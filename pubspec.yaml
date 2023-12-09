@@ -24,6 +24,7 @@ dependencies:
   flutter_easyloading: ^3.0.5
   logger: ^1.1.0
   dio: ^5.3.3
+  permission_handler:
   webview_flutter: ^4.4.1
 
 dev_dependencies:
