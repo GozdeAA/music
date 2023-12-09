@@ -10,7 +10,7 @@ class LightTheme {
     this.borderColor = const Color(0xff130023),
     this.tertiary = const Color(0xff181A23),
     this.secondary = const Color(0xff30D5C8),
-    this.lightBlue = const Color(0xff3BB4F4),
+    this.innerBoxColor = const Color(0xc0ffffff),
     this.inputColor = const Color(0xffF6F9FB),
     this.iconColor = const Color(0xff3E76FF),
     this.unselectedColor = const Color(0xffAFAFAF),
@@ -54,7 +54,7 @@ class LightTheme {
 
   final Color unselectedColor;
 
-  final Color? lightBlue;
+  final Color? innerBoxColor;
 
   TextTheme txtTheme = ThemeData.light().textTheme;
 
@@ -75,7 +75,7 @@ class LightTheme {
       surface: mainColor,
       outlineVariant: inputColor,
       scrim: darkerIconColor,
-      surfaceTint: lightBlue,
+      surfaceTint: innerBoxColor,
       onError: errorColor,
       onSurfaceVariant: iconColor,
     );

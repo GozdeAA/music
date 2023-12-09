@@ -7,6 +7,7 @@ import 'package:freechoice_music/utilities/extensions/sizer.dart';
 import 'package:freechoice_music/utilities/widgets/custom_widget/background_grad.dart';
 import 'package:get/get.dart';
 
+import '../utilities/constants/consts.dart';
 import '../utilities/widgets/custom_icon_button.dart';
 
 class HomePage extends StatelessWidget {
@@ -25,27 +26,82 @@ class HomePage extends StatelessWidget {
               children: [
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 4.w),
-                  child: Row(
+                  child: Column(
                     children: [
-                      CustomIconButton(
-                        assetName: 'user',
-                        onPressed: () {
-                          //setting page
-                        },
+                      Row(
+                        children: [
+                          CustomIconButton(
+                            assetName: 'user',
+                            onPressed: () {
+                              //setting page
+                            },
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 3.h,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const TextField(
+                            cursorColor: Color(0xff3b0951),
+                            decoration: InputDecoration(
+                                fillColor: Color(0xc0ffffff),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 4.0, horizontal: 5),
+                                hintStyle: TextStyle(color: Colors.grey),
+                                hintText: "Ara",
+                                focusedBorder: border,
+                                filled: true,
+                                enabledBorder: border,
+                                border: border),
+                          ),
+                          GridView(
+                            shrinkWrap: true,
+                            padding: EdgeInsets.all(1.h),
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              childAspectRatio: 1,
+                              mainAxisSpacing: 2.h,
+                              crossAxisSpacing: 3.w,
+                              crossAxisCount: 3,
+                            ),
+                            children: [
+                              coverWidget(onTap: () {}),
+                              coverWidget(onTap: () {}),
+                              coverWidget(onTap: () {})
+                            ],
+                          )
+                        ],
                       ),
                     ],
                   ),
                 ),
-                Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 4.w),
-                    child: const Column(children: [
-
-                    ],)),
                 songArea(),
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  // çalma listesi kapak
+  GestureDetector coverWidget({required VoidCallback onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 16.h,
+        width: 32.w,
+        padding: EdgeInsets.all(0.5.h),
+        child: Placeholder(),
+        //resim buraya
+        decoration: BoxDecoration(
+            color: colors.surfaceTint,
+            borderRadius: border.borderRadius,
+            shape: BoxShape.rectangle),
       ),
     );
   }
@@ -87,6 +143,7 @@ class HomePage extends StatelessWidget {
             child: AnimatedTextKit(
               animatedTexts: [
                 TypewriterAnimatedText(
+                  //ilgi kayan text animasyonu ile değiştirilecek
                   'Şarkı ismi',
                   speed: const Duration(milliseconds: 100),
                   cursor: "",
