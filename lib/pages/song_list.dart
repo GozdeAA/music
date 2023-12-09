@@ -84,7 +84,7 @@ class SongListPage extends StatelessWidget {
         title: Text(title),
         subtitle: Text(subtitle),
         trailing: IconButton(
-          icon: Icon(Icons.menu_open_sharp),
+          icon: const Icon(Icons.menu_open_sharp),
           onPressed: onPressed,
         ),
       ),

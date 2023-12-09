@@ -41,7 +41,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
                             }
                           },
                           child: Icon(
-                            CupertinoIcons.chevron_down,
+                            CupertinoIcons.arrow_left,
                             color: colors.primary,
                           )),
                     ),

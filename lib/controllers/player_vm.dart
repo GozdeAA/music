@@ -6,7 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../utilities/constants/enums.dart';
 
-class HomeVM extends GetxController {
+class PlayerVM extends GetxController {
   SwiperController swiperController = SwiperController();
   AudioPlayer player = AudioPlayer();
   RxList<SongModel> files = <SongModel>[].obs;
@@ -46,7 +46,7 @@ class HomeVM extends GetxController {
   }
 
   Future getFiles() async {
-  //  files.value = await _audioQuery.querySongs();
+    files.value = await _audioQuery.querySongs();
     printInfo(info: "bulunan dosya sayısı: ${files.length}");
   }
 
