@@ -2,6 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freechoice_music/controllers/player_vm.dart';
+import 'package:freechoice_music/pages/auth.dart';
 import 'package:freechoice_music/pages/player.dart';
 import 'package:freechoice_music/utilities/extensions/sizer.dart';
 import 'package:freechoice_music/utilities/widgets/custom_widget/background_grad.dart';
@@ -33,7 +34,8 @@ class HomePage extends StatelessWidget {
                           CustomIconButton(
                             assetName: 'user',
                             onPressed: () {
-                              //setting page
+                             Get.to(() => AuthDeezer());
+                              //setting page || profile page
                             },
                           ),
                         ],
@@ -62,7 +64,7 @@ class HomePage extends StatelessWidget {
                             padding: EdgeInsets.all(1.h),
                             physics: const NeverScrollableScrollPhysics(),
                             gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
+                            SliverGridDelegateWithFixedCrossAxisCount(
                               childAspectRatio: 1,
                               mainAxisSpacing: 2.h,
                               crossAxisSpacing: 3.w,
@@ -135,8 +137,9 @@ class HomePage extends StatelessWidget {
                     color: Colors.white,
                     size: 24.sp,
                   ),
-                  onPressed: () => Get.to(() => const PlayerPage(),
-                      transition: Transition.downToUp))),
+                  onPressed: () =>
+                      Get.to(() => const PlayerPage(),
+                          transition: Transition.downToUp))),
           const Spacer(),
           Flexible(
             flex: 3,
