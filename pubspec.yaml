@@ -1,7 +1,6 @@
 name: freechoice_music
 description: A new bobosh project.
-publish_to: 'none'
-version: 1.0.0+1
+version: 0.0.1
 
 environment:
   sdk: '>=2.19.6 <3.0.0'
@@ -24,7 +23,7 @@ dependencies:
   flutter_easyloading: ^3.0.5
   logger: ^1.1.0
   dio: ^5.3.3
-  permission_handler:
+  permission_handler: ^11.1.0
   webview_flutter: ^4.4.1
 
 dev_dependencies:
