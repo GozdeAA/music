@@ -17,12 +17,12 @@ class PlayerVM extends GetxController {
 
   @override
   Future<void> onInit() async {
-    await askPermission();
     super.onInit();
   }
 
   @override
   Future<void> onReady() async {
+    await askPermission();
     await _audioQuery.permissionsRequest();
     getFiles();
     super.onReady();

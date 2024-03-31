@@ -1,6 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:freechoice_music/utilities/network/endpoints.dart';
+import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import '../utilities/helpers/user/session.dart';
 
 class AuthDeezer extends StatefulWidget {
   const AuthDeezer({Key? key}) : super(key: key);
@@ -29,9 +33,6 @@ class _AuthDeezerState extends State<AuthDeezer> {
       ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(
         NavigationDelegate(
-          onProgress: (int progress) {
-            debugPrint('WebView is loading (progress : $progress%)');
-          },
           onPageStarted: (String url) {
             debugPrint('Page started loading: $url');
           },
@@ -47,13 +48,31 @@ Page resource error:
   isForMainFrame: ${error.isForMainFrame}
           ''');
           },
-          onNavigationRequest: (NavigationRequest request) {
-            if (request.url.startsWith('https://www.youtube.com/')) {
-              debugPrint('blocking navigation to ${request.url}');
-              return NavigationDecision.prevent;
+          onNavigationRequest: (NavigationRequest request) async {
+            if (request.url.startsWith(redirectUrl)) {
+              //close webview
+              //put loading
+
+              //add cancel option
+              try{
+                //show laoding
+                var urlList = request.url.toString().split("$redirectUrl?code=");
+                Session.code = urlList.last;
+                var res = await Dio().request(tokenUrl + Session.code!);
+                var match = res.data.toString().split("access_token=");
+                Session.token = match.last.toString().split("&").first;
+                Get.back();
+                return NavigationDecision.prevent;
+              }catch(e){
+                // controller.clearCache(); bu gerekli mi asko
+                Get.back();
+                //show message error
+                return NavigationDecision.prevent;
+              }
+
+            } else {
+              return NavigationDecision.navigate;
             }
-            debugPrint('allowing navigation to ${request.url}');
-            return NavigationDecision.navigate;
           },
           onUrlChange: (UrlChange change) {
             debugPrint('url change to ${change.url}');

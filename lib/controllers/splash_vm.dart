@@ -11,7 +11,7 @@ class SplashVM extends GetxController {
   }
 
   Future<void> skipToHome() async {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 3));
     Get.put(PlayerVM());
     Get.off(() => const HomePage());
   }

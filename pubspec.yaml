@@ -11,11 +11,11 @@ dependencies:
     sdk: flutter
   get: ^5.0.0-release-candidate-4
   audioplayers: ^4.1.0 #kaldırılabilir
-  just_audio: ^0.9.34
-  just_audio_background: ^0.0.1-beta.10
+  just_audio: ^0.9.36
+  just_audio_background: ^0.0.1-beta.11
   flutter_native_splash:
   path_provider:
-  card_swiper: ^2.0.4 #kaldırılabilir
+  card_swiper: ^3.0.1 #kaldırılabilir
   on_audio_query: ^2.9.0
   flutter_svg: ^2.0.5
 #perfect_volume_control: ^1.0.5
@@ -23,7 +23,7 @@ dependencies:
   flutter_easyloading: ^3.0.5
   logger: ^1.1.0
   dio: ^5.3.3
-  permission_handler: ^11.1.0
+  permission_handler: ^11.3.1
   animated_text_kit: ^4.2.2
   webview_flutter: ^4.4.1
   animations: ^2.0.10

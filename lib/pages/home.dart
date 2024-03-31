@@ -108,70 +108,69 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Container songArea() {
-    return Container(
-      //TODO animated container
-      height: 10.h,
-      padding: EdgeInsets.symmetric(horizontal: 3.w),
-      decoration: BoxDecoration(
-          color: const Color(0xec100112),
-          boxShadow: [
-            BoxShadow(
-                offset: const Offset(0, 9),
-                blurRadius: 20,
-                color: Colors.grey.shade700,
-                spreadRadius: 9)
+  Widget songArea() {
+    return GestureDetector(
+      onTap: ()=>Get.to(() => const PlayerPage(),
+          transition: Transition.downToUp),
+      child: Container(
+        height: 10.h,
+        padding: EdgeInsets.symmetric(horizontal: 3.w),
+        decoration: BoxDecoration(
+            color: const Color(0xec100112),
+            boxShadow: [
+              BoxShadow(
+                  offset: const Offset(0, 9),
+                  blurRadius: 20,
+                  color: Colors.grey.shade700,
+                  spreadRadius: 9)
+            ],
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+            border: const Border(
+                top: BorderSide(color: Color(0xb847375b)),
+                left: BorderSide(color: Color(0xb847375b)),
+                right: BorderSide(color: Color(0xb847375b)))),
+        child: Row(
+          children: [
+            Flexible(
+                child: Icon(
+                      CupertinoIcons.chevron_up,
+                      color: Colors.white,
+                      size: 24.sp,
+                    ),),
+            const Spacer(),
+            Flexible(
+              flex: 3,
+              child: AnimatedTextKit(
+                animatedTexts: [
+                  TypewriterAnimatedText(
+                    //ilgi kayan text animasyonu ile değiştirilecek
+                    'Şarkı ismi',
+                    speed: const Duration(milliseconds: 100),
+                    cursor: "",
+                    textStyle: TextStyle(
+                      fontSize: 22.sp,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TypewriterAnimatedText(
+                    'cicikus ismi',
+                    cursor: "",
+                    speed: const Duration(milliseconds: 100),
+                    textStyle: TextStyle(
+                      fontSize: 22.sp,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+                stopPauseOnTap: true,
+                repeatForever: true,
+              ),
+            )
           ],
-          borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(16), topRight: Radius.circular(16)),
-          border: const Border(
-              top: BorderSide(color: Color(0xb847375b)),
-              left: BorderSide(color: Color(0xb847375b)),
-              right: BorderSide(color: Color(0xb847375b)))),
-      child: Row(
-        children: [
-          Flexible(
-              child: IconButton(
-                  icon: Icon(
-                    CupertinoIcons.chevron_up,
-                    color: Colors.white,
-                    size: 24.sp,
-                  ),
-                  onPressed: () =>
-                      Get.to(() => const PlayerPage(),
-                          transition: Transition.downToUp))),
-          const Spacer(),
-          Flexible(
-            flex: 3,
-            child: AnimatedTextKit(
-              animatedTexts: [
-                TypewriterAnimatedText(
-                  //ilgi kayan text animasyonu ile değiştirilecek
-                  'Şarkı ismi',
-                  speed: const Duration(milliseconds: 100),
-                  cursor: "",
-                  textStyle: TextStyle(
-                    fontSize: 22.sp,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                TypewriterAnimatedText(
-                  'cicikus ismi',
-                  cursor: "",
-                  speed: const Duration(milliseconds: 100),
-                  textStyle: TextStyle(
-                    fontSize: 22.sp,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-              stopPauseOnTap: true,
-              repeatForever: true,
-            ),
-          )
-        ],
+        ),
       ),
     );
   }
