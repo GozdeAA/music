@@ -9,7 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  get: ^5.0.0-release-candidate-4
+  get: ^4.6.6
+  get_storage: ^2.1.1
   audioplayers: ^4.1.0 #kaldırılabilir
   just_audio: ^0.9.36
   just_audio_background: ^0.0.1-beta.11
@@ -27,6 +28,7 @@ dependencies:
   animated_text_kit: ^4.2.2
   webview_flutter: ^4.4.1
   animations: ^2.0.10
+  get_it:
 
 dev_dependencies:
   flutter_test:

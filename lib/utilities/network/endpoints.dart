@@ -8,3 +8,4 @@ const authUrl =
 
 const tokenUrl =
     "https://connect.deezer.com/oauth/access_token.php?app_id=$appId&secret=$appSecret&code=";
+const mainUrl = "https://api.deezer.com/";

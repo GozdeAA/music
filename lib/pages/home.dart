@@ -34,7 +34,7 @@ class HomePage extends StatelessWidget {
                           CustomIconButton(
                             assetName: 'user',
                             onPressed: () {
-                             Get.to(() => AuthDeezer());
+                              Get.to(() => AuthDeezer());
                               //setting page || profile page
                             },
                           ),
@@ -64,16 +64,19 @@ class HomePage extends StatelessWidget {
                             padding: EdgeInsets.all(1.h),
                             physics: const NeverScrollableScrollPhysics(),
                             gridDelegate:
-                            SliverGridDelegateWithFixedCrossAxisCount(
+                                SliverGridDelegateWithFixedCrossAxisCount(
                               childAspectRatio: 1,
                               mainAxisSpacing: 2.h,
                               crossAxisSpacing: 3.w,
                               crossAxisCount: 3,
                             ),
                             children: [
-                              coverWidget(onTap: () {}),
-                              coverWidget(onTap: () {}),
-                              coverWidget(onTap: () {})
+                              coverWidget(
+                                  onTap: () {}, title: "yerel dosyalar"),
+                              coverWidget(
+                                  onTap: () {}, title: "deezer begeniler"),
+                              coverWidget(
+                                  onTap: () {}, title: "diger calma listesi 1")
                             ],
                           )
                         ],
@@ -91,14 +94,17 @@ class HomePage extends StatelessWidget {
   }
 
   // çalma listesi kapak
-  GestureDetector coverWidget({required VoidCallback onTap}) {
+  GestureDetector coverWidget(
+      {required VoidCallback onTap, required String title}) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
         height: 16.h,
         width: 32.w,
         padding: EdgeInsets.all(0.5.h),
-        child: Placeholder(),
+        child: Placeholder(
+          child: Text(title),
+        ),
         //resim buraya
         decoration: BoxDecoration(
             color: colors.surfaceTint,
@@ -110,8 +116,8 @@ class HomePage extends StatelessWidget {
 
   Widget songArea() {
     return GestureDetector(
-      onTap: ()=>Get.to(() => const PlayerPage(),
-          transition: Transition.downToUp),
+      onTap: () =>
+          Get.to(() => const PlayerPage(), transition: Transition.downToUp),
       child: Container(
         height: 10.h,
         padding: EdgeInsets.symmetric(horizontal: 3.w),
@@ -133,11 +139,12 @@ class HomePage extends StatelessWidget {
         child: Row(
           children: [
             Flexible(
-                child: Icon(
-                      CupertinoIcons.chevron_up,
-                      color: Colors.white,
-                      size: 24.sp,
-                    ),),
+              child: Icon(
+                CupertinoIcons.chevron_up,
+                color: Colors.white,
+                size: 24.sp,
+              ),
+            ),
             const Spacer(),
             Flexible(
               flex: 3,

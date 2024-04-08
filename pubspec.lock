@@ -300,10 +300,26 @@ packages:
     dependency: "direct main"
     description:
       name: get
-      sha256: "324e6808b3cac1e13d26785a8a7b5df674b02907ebbd29a5b4e5ffa14d68c1e4"
+      sha256: e4e7335ede17452b391ed3b2ede016545706c01a02292a6c97619705e7d2a85e
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.0-release-candidate-4"
+    version: "4.6.6"
+  get_it:
+    dependency: "direct main"
+    description:
+      name: get_it
+      sha256: "36524bfb3f0b4ec952c3202466fdd69ad1f7ac1dd9b0a7564177707e45bfaeb9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.6.8"
+  get_storage:
+    dependency: "direct main"
+    description:
+      name: get_storage
+      sha256: "39db1fffe779d0c22b3a744376e86febe4ade43bf65e06eab5af707dc84185a2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
   html:
     dependency: transitive
     description:

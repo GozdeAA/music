@@ -1,11 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:freechoice_music/utilities/network/endpoints.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../utilities/helpers/user/session.dart';
 
+
+//todo add vm
+//Todo add get it
 class AuthDeezer extends StatefulWidget {
   const AuthDeezer({Key? key}) : super(key: key);
 
@@ -50,18 +54,17 @@ Page resource error:
           },
           onNavigationRequest: (NavigationRequest request) async {
             if (request.url.startsWith(redirectUrl)) {
-              //close webview
-              //put loading
-
               //add cancel option
               try{
-                //show laoding
+                Get.back();
+                EasyLoading.show();
                 var urlList = request.url.toString().split("$redirectUrl?code=");
                 Session.code = urlList.last;
                 var res = await Dio().request(tokenUrl + Session.code!);
                 var match = res.data.toString().split("access_token=");
                 Session.token = match.last.toString().split("&").first;
-                Get.back();
+                EasyLoading.dismiss();
+                Session.saveToken();
                 return NavigationDecision.prevent;
               }catch(e){
                 // controller.clearCache(); bu gerekli mi asko
@@ -94,8 +97,11 @@ Page resource error:
 
   @override
   Widget build(BuildContext context) {
-    return WebViewWidget(
-      controller: _controller,
+    return Scaffold(
+      appBar: AppBar(backgroundColor: Colors.transparent),
+      body: WebViewWidget(
+        controller: _controller,
+      ),
     );
   }
 }
