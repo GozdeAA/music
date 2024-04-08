@@ -1,12 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:freechoice_music/services/abstract/i_user_service.dart';
 import 'package:freechoice_music/utilities/network/endpoints.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../utilities/helpers/user/session.dart';
-
 
 //todo add vm
 //Todo add get it
@@ -23,7 +24,7 @@ class _AuthDeezerState extends State<AuthDeezer> {
   @override
   void initState() {
     super.initState();
-
+    var userService = GetIt.I<IUserService>();
     // #docregion platform_features
     late final PlatformWebViewControllerCreationParams params;
     params = const PlatformWebViewControllerCreationParams();
@@ -53,29 +54,7 @@ Page resource error:
           ''');
           },
           onNavigationRequest: (NavigationRequest request) async {
-            if (request.url.startsWith(redirectUrl)) {
-              //add cancel option
-              try{
-                Get.back();
-                EasyLoading.show();
-                var urlList = request.url.toString().split("$redirectUrl?code=");
-                Session.code = urlList.last;
-                var res = await Dio().request(tokenUrl + Session.code!);
-                var match = res.data.toString().split("access_token=");
-                Session.token = match.last.toString().split("&").first;
-                EasyLoading.dismiss();
-                Session.saveToken();
-                return NavigationDecision.prevent;
-              }catch(e){
-                // controller.clearCache(); bu gerekli mi asko
-                Get.back();
-                //show message error
-                return NavigationDecision.prevent;
-              }
-
-            } else {
-              return NavigationDecision.navigate;
-            }
+            return userService.logIn(request);
           },
           onUrlChange: (UrlChange change) {
             debugPrint('url change to ${change.url}');

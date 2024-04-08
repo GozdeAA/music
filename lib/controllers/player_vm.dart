@@ -89,4 +89,5 @@ class PlayerVM extends GetxController {
       printError();
     }
   }
+
 }
