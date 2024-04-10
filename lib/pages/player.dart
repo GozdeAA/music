@@ -1,6 +1,7 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:freechoice_music/controllers/player_vm.dart';
 import 'package:freechoice_music/pages/song_list.dart';
@@ -84,7 +85,7 @@ class PlayerPage extends StatelessWidget {
                     height: 50.h,
                     child: Swiper(
                       onIndexChanged: (i) {
-                        if (vm.files.isNotEmpty) {
+                        if (vm.query.isNotEmpty) {
                           vm.currentIndex.value = i;
                           //vm.checkPlayingStatus();
                           vm.testplay(i: i, PlayType.current);
@@ -93,7 +94,7 @@ class PlayerPage extends StatelessWidget {
                       loop: false,
                       controller: vm.swiperController,
                       itemBuilder: (BuildContext context, int index) {
-                        if (vm.files.isEmpty) {
+                        if (vm.query.isEmpty) {
                           return Center(
                             child: Column(
                               children: [
@@ -126,7 +127,7 @@ class PlayerPage extends StatelessWidget {
                           );
                         }
                       },
-                      itemCount: vm.files.length,
+                      itemCount: vm.query.length,
                       viewportFraction: 0.8,
                       scale: 0.9,
                     ),
@@ -142,6 +143,7 @@ class PlayerPage extends StatelessWidget {
   Container playArea(PlayerVM vm) {
     return Container(
       height: 16.h,
+      padding: EdgeInsets.symmetric(horizontal: 4.w),
       decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -150,15 +152,20 @@ class PlayerPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          const Spacer(
+            flex: 2,
+          ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CustomIconButton(
                   assetName: "skip_previous",
                   onPressed: () => vm.testplay(PlayType.previous)),
+              const Spacer(),
               CustomIconButton(
                   assetName: "pre", onPressed: () => vm.pre10Seconds()),
+              const Spacer(),
               AnimatedSwitcher(
                 transitionBuilder: (Widget child, Animation<double> animation) {
                   return ScaleTransition(scale: animation, child: child);
@@ -169,16 +176,36 @@ class PlayerPage extends StatelessWidget {
                 switchOutCurve: Curves.easeOutCirc,
                 child: Obx(() => customButton(vm.playButton.value, vm)),
               ),
+              const Spacer(),
               CustomIconButton(
                   assetName: "next", onPressed: () => vm.next10Seconds()),
+              const Spacer(),
               CustomIconButton(
                   assetName: "skip_next",
                   onPressed: () => vm.testplay(PlayType.next)),
             ],
           ),
           SizedBox(
-            height: 0.5.h,
+            height: 1.h,
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CustomIconButton(
+                assetName: "shuffle",
+                size: 19.sp,
+                onPressed: () => vm.shuffle(),
+                title: "Karıstır",
+              ),
+              CustomIconButton(
+                assetName: "loop",
+                size: 19.sp,
+                onPressed: () => vm.loopCurrentSong(),
+                title: "Tekrarla",
+              ),
+            ],
+          ),
+          const Spacer()
         ],
       ),
     );

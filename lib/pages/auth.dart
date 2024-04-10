@@ -1,13 +1,9 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:freechoice_music/services/abstract/i_user_service.dart';
 import 'package:freechoice_music/utilities/network/endpoints.dart';
-import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../utilities/helpers/user/session.dart';
 
 //todo add vm
 //Todo add get it

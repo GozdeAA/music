@@ -10,6 +10,7 @@ class PlayerVM extends GetxController {
   SwiperController swiperController = SwiperController();
   AudioPlayer player = AudioPlayer();
   RxList<SongModel> files = <SongModel>[].obs;
+  RxList<SongModel> query = <SongModel>[].obs;
   RxInt currentIndex = 0.obs;
   RxBool playButton = true.obs;
   RxString currentSongName = "".obs;
@@ -24,7 +25,6 @@ class PlayerVM extends GetxController {
   Future<void> onReady() async {
     await askPermission();
     await _audioQuery.permissionsRequest();
-    getFiles();
     super.onReady();
   }
 
@@ -42,11 +42,14 @@ class PlayerVM extends GetxController {
 
     if (storage.isPermanentlyDenied || library.isPermanentlyDenied) {
       await openAppSettings();
+    } else {
+      getFiles();
     }
   }
 
   Future getFiles() async {
     files.value = await _audioQuery.querySongs();
+    query.value = files;
     printInfo(info: "bulunan dosya sayısı: ${files.length}");
   }
 
@@ -61,6 +64,20 @@ class PlayerVM extends GetxController {
       player.seek(dur - const Duration(seconds: 10));
     } else {
       player.seek(const Duration(seconds: 0));
+    }
+  }
+
+  shuffle({RxList<SongModel>? playlist}) {
+    if (playlist != null && playlist.isNotEmpty) {
+      playlist.shuffle();
+    } else {
+      query.shuffle();
+    }
+  }
+
+  loopCurrentSong() {
+    if (query[currentIndex.value] != query[currentIndex.value + 1]) {
+      query.insert(currentIndex.value + 1, query[currentIndex.value]);
     }
   }
 
@@ -89,5 +106,4 @@ class PlayerVM extends GetxController {
       printError();
     }
   }
-
 }

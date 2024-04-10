@@ -1,10 +1,11 @@
-
 import 'package:flutter/material.dart';
+import 'package:freechoice_music/controllers/player_vm.dart';
 import 'package:freechoice_music/utilities/constants/consts.dart';
 import 'package:freechoice_music/utilities/extensions/sizer.dart';
 import 'package:freechoice_music/utilities/widgets/appbar.dart';
 import 'package:get/get.dart';
-//SCALING ITEMS IN LIST
+
+//todo SCALING ITEMS IN LIST
 class SongListPage extends StatelessWidget {
   const SongListPage({Key? key}) : super(key: key);
 
@@ -12,6 +13,7 @@ class SongListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
     ScrollController scrollController = ScrollController();
+    var vm = Get.put(PlayerVM());
     return Stack(
       children: [
         Container(
@@ -27,7 +29,7 @@ class SongListPage extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: AnimatedList(
               key: listKey,
-              initialItemCount: 99,
+              initialItemCount: vm.query.length,
               shrinkWrap: true,
               controller: scrollController,
               itemBuilder: (context, i, animation) {
@@ -38,23 +40,23 @@ class SongListPage extends StatelessWidget {
                   if ((i != 0 && i % 8 == 0) && a.dy == 88) {
                     newScale.value = 0.9;
                     getPos(listKey);
-                    newScale.value=1;
-                  } else if((i != 0 && i % 8 == 0) && a.dy != 88){
+                    newScale.value = 1;
+                  } else if ((i != 0 && i % 8 == 0) && a.dy != 88) {
                     newScale.value = 1.0;
                   }
                 });
                 //  print(a.dy);
 
                 return Obx(
-                      () => AnimatedScale(
+                  () => AnimatedScale(
                       duration: const Duration(seconds: 1),
                       scale: newScale.value,
                       child: songCard(
-                        title: "title",
+                        title: vm.query[i].displayName,
                         onPressed: () {
                           newScale.value = 1.0;
                         },
-                        subtitle: "subtitle",
+                        subtitle: vm.query[i].artist ?? "",
                       )),
                 );
                 // return songCard(title: "title", subtitle: "subtitle");
@@ -66,16 +68,18 @@ class SongListPage extends StatelessWidget {
     );
   }
 
-  Offset getPos(listKey){
+  Offset getPos(listKey) {
     final RenderBox renderBox =
-    listKey.currentContext?.findRenderObject() as RenderBox;
+        listKey.currentContext?.findRenderObject() as RenderBox;
     var a = renderBox.localToGlobal(Offset.zero);
-    return a ;
+    return a;
   }
+
+  //todo add dismissable
   Card songCard(
       {required String title,
-        required String subtitle,
-        VoidCallback? onPressed}) {
+      required String subtitle,
+      VoidCallback? onPressed}) {
     return Card(
       elevation: 10,
       color: colors.primary,

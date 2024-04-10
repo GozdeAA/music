@@ -34,7 +34,7 @@ class HomePage extends StatelessWidget {
                           CustomIconButton(
                             assetName: 'user',
                             onPressed: () {
-                              Get.to(() => AuthDeezer());
+                              Get.to(() => const AuthDeezer());
                               //setting page || profile page
                             },
                           ),
