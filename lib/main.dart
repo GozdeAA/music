@@ -7,6 +7,7 @@ import 'package:freechoice_music/utilities/themes/light_theme.dart';
 import 'package:freechoice_music/utilities/widgets/loading.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 
 void main() {
   runApp(const App());
@@ -47,7 +48,12 @@ class _AppState extends State<App> {
     );
   }
 
-  void setup() {
+  Future<void> setup() async {
     GetIt.I.registerSingleton<IUserService>(UserService());
+    await JustAudioBackground.init(
+      androidNotificationChannelId: 'com.bbsh.freechoice_music',
+      androidNotificationChannelName: 'Audio playback',
+      androidNotificationOngoing: true,
+    );
   }
 }

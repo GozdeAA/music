@@ -17,11 +17,6 @@ class PlayerVM extends GetxController {
   final OnAudioQuery _audioQuery = OnAudioQuery();
 
   @override
-  Future<void> onInit() async {
-    super.onInit();
-  }
-
-  @override
   Future<void> onReady() async {
     await askPermission();
     await _audioQuery.permissionsRequest();
@@ -38,8 +33,7 @@ class PlayerVM extends GetxController {
   askPermission() async {
     var storage = await Permission.storage.request();
     var library = await Permission.mediaLibrary.request();
-    //ilgi other permissions can be added
-
+    
     if (storage.isPermanentlyDenied || library.isPermanentlyDenied) {
       await openAppSettings();
     } else {
