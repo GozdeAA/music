@@ -1,5 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:card_swiper/card_swiper.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:freechoice_music/models/play_list/play_list_model.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -8,9 +10,12 @@ import '../utilities/constants/enums.dart';
 
 class PlayerVM extends GetxController {
   SwiperController swiperController = SwiperController();
+  TextEditingController searchController = TextEditingController();
   AudioPlayer player = AudioPlayer();
   RxList<SongModel> files = <SongModel>[].obs;
   RxList<SongModel> query = <SongModel>[].obs;
+  RxList<SongModel> searchList = <SongModel>[].obs;
+  RxList<PlayList> playLists = RxList([]);
   RxInt currentIndex = 0.obs;
   RxBool playButton = true.obs;
   RxString currentSongName = "".obs;
@@ -33,11 +38,24 @@ class PlayerVM extends GetxController {
   askPermission() async {
     var storage = await Permission.storage.request();
     var library = await Permission.mediaLibrary.request();
-    
+
     if (storage.isPermanentlyDenied || library.isPermanentlyDenied) {
       await openAppSettings();
     } else {
       getFiles();
+    }
+  }
+
+  void onSearch(String value) {
+    if (files.isNotEmpty && value.length >= 3) {
+      for (var i in files) {
+        if ((i.title.isNotEmpty && i.title.toLowerCase().contains(value)) ||
+            i.artist != null &&
+                i.artist!.isNotEmpty &&
+                i.artist!.toLowerCase().contains(value)) {
+          searchList.add(i);
+        }
+      }
     }
   }
 
@@ -46,6 +64,8 @@ class PlayerVM extends GetxController {
     query.value = files;
     printInfo(info: "bulunan dosya sayısı: ${files.length}");
   }
+
+  Future getPlayLists() async {}
 
   next10Seconds() async {
     Duration? dur = await player.getCurrentPosition();

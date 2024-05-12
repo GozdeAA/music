@@ -1,7 +1,7 @@
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../utilities/helpers/user/play_list_model.dart';
-import '../../utilities/helpers/user/user.dart';
+import '../../models/play_list/play_list_model.dart';
+import '../../models/user/user.dart';
 
 abstract class IUserService {
   Future<User?> getUserInfo(String userId);

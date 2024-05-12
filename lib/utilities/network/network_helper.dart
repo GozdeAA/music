@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import '../helpers/user/session.dart';
 
 class HttpHelper {
   static Dio? _client;

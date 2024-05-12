@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-PlayList welcomeFromJson(String str) => PlayList.fromJson(json.decode(str));
+import 'package:on_audio_query/on_audio_query.dart';
 
-String welcomeToJson(PlayList data) => json.encode(data.toJson());
+PlayList playListFromJson(String str) => PlayList.fromJson(json.decode(str));
+
+String playListToJson(PlayList data) => json.encode(data.toJson());
 
 class PlayList {
   final String? id;
@@ -32,6 +34,7 @@ class PlayList {
   final String? pictureType;
   final Creator? creator;
   final String? type;
+  final List<SongModel>? localSongs;
   final Tracks? tracks;
 
   PlayList({
@@ -45,6 +48,7 @@ class PlayList {
     this.nbTracks,
     this.fans,
     this.link,
+    this.localSongs,
     this.share,
     this.picture,
     this.pictureSmall,

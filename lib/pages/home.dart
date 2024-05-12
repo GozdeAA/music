@@ -2,21 +2,19 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freechoice_music/controllers/player_vm.dart';
-import 'package:freechoice_music/pages/auth.dart';
 import 'package:freechoice_music/pages/player.dart';
 import 'package:freechoice_music/utilities/extensions/sizer.dart';
 import 'package:freechoice_music/utilities/widgets/custom_widget/background_grad.dart';
 import 'package:get/get.dart';
 
 import '../utilities/constants/consts.dart';
-import '../utilities/widgets/custom_icon_button.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var vm = PlayerVM();
+    var vm = Get.put(PlayerVM());
     return Scaffold(
       body: Stack(
         children: [
@@ -29,26 +27,17 @@ class HomePage extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 4.w),
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          CustomIconButton(
-                            assetName: 'user',
-                            onPressed: () {
-                              Get.to(() => const AuthDeezer());
-                              //setting page || profile page
-                            },
-                          ),
-                        ],
-                      ),
                       SizedBox(
-                        height: 3.h,
+                        height: 2.h,
                       ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const TextField(
-                            cursorColor: Color(0xff3b0951),
-                            decoration: InputDecoration(
+                          TextField(
+                            cursorColor: const Color(0xff3b0951),
+                            controller: vm.searchController,
+                            onChanged: (value) =>vm.onSearch(value),
+                            decoration: const InputDecoration(
                                 fillColor: Color(0xc0ffffff),
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 4.0, horizontal: 5),
@@ -84,7 +73,7 @@ class HomePage extends StatelessWidget {
                     ],
                   ),
                 ),
-                songArea(),
+                songArea(vm),
               ],
             ),
           ),
@@ -102,19 +91,19 @@ class HomePage extends StatelessWidget {
         height: 16.h,
         width: 32.w,
         padding: EdgeInsets.all(0.5.h),
-        child: Placeholder(
-          child: Text(title),
-        ),
         //resim buraya
         decoration: BoxDecoration(
             color: colors.surfaceTint,
             borderRadius: border.borderRadius,
             shape: BoxShape.rectangle),
+        child: Placeholder(
+          child: Text(title),
+        ),
       ),
     );
   }
 
-  Widget songArea() {
+  Widget songArea(PlayerVM vm) {
     return GestureDetector(
       onTap: () =>
           Get.to(() => const PlayerPage(), transition: Transition.downToUp),
@@ -146,36 +135,41 @@ class HomePage extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            Flexible(
-              flex: 3,
-              child: AnimatedTextKit(
-                animatedTexts: [
-                  TypewriterAnimatedText(
-                    //ilgi kayan text animasyonu ile değiştirilecek
-                    'Şarkı ismi',
-                    speed: const Duration(milliseconds: 100),
-                    cursor: "",
-                    textStyle: TextStyle(
-                      fontSize: 22.sp,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+            Obx(() {
+              return Flexible(
+                flex: 3,
+                child: AnimatedTextKit(
+                  animatedTexts: [
+                    TypewriterAnimatedText(
+                      //ilgi kayan text animasyonu ile değiştirilecek
+                      vm.currentSongName.value,
+                      speed: const Duration(milliseconds: 100),
+                      cursor: "",
+                      textStyle: TextStyle(
+                        fontSize: 22.sp,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  TypewriterAnimatedText(
-                    'cicikus ismi',
-                    cursor: "",
-                    speed: const Duration(milliseconds: 100),
-                    textStyle: TextStyle(
-                      fontSize: 22.sp,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-                stopPauseOnTap: true,
-                repeatForever: true,
-              ),
-            )
+                    if (vm.query.isNotEmpty &&
+                        vm.query[vm.currentIndex.value].artist != null &&
+                        vm.query[vm.currentIndex.value].artist!.isNotEmpty)
+                      TypewriterAnimatedText(
+                        vm.query[vm.currentIndex.value].artist!,
+                        cursor: "",
+                        speed: const Duration(milliseconds: 100),
+                        textStyle: TextStyle(
+                          fontSize: 22.sp,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                  ],
+                  stopPauseOnTap: true,
+                  repeatForever: true,
+                ),
+              );
+            })
           ],
         ),
       ),
