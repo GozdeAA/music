@@ -12,4 +12,4 @@ var colors = Get.theme.colorScheme;
 
 const border = OutlineInputBorder(
     borderSide: BorderSide(color: Color(0xc0ffffff)),
-    borderRadius: BorderRadius.all(Radius.circular(8)));
+    borderRadius: BorderRadius.all(Radius.circular(16)));

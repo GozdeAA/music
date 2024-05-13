@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:freechoice_music/controllers/player_vm.dart';
 import 'package:freechoice_music/pages/player.dart';
 import 'package:freechoice_music/utilities/extensions/sizer.dart';
@@ -30,45 +31,33 @@ class HomePage extends StatelessWidget {
                       SizedBox(
                         height: 2.h,
                       ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          TextField(
-                            cursorColor: const Color(0xff3b0951),
-                            controller: vm.searchController,
-                            onChanged: (value) =>vm.onSearch(value),
-                            decoration: const InputDecoration(
-                                fillColor: Color(0xc0ffffff),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 4.0, horizontal: 5),
-                                hintStyle: TextStyle(color: Colors.grey),
-                                hintText: "Ara",
-                                focusedBorder: border,
-                                filled: true,
-                                enabledBorder: border,
-                                border: border),
-                          ),
-                          GridView(
-                            shrinkWrap: true,
-                            padding: EdgeInsets.all(1.h),
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              childAspectRatio: 1,
-                              mainAxisSpacing: 2.h,
-                              crossAxisSpacing: 3.w,
-                              crossAxisCount: 3,
+                      Obx(
+                        () => Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            TextField(
+                              cursorColor: const Color(0xff3b0951),
+                              controller: vm.searchController,
+                              onChanged: (value) => vm.onSearch(value),
+                              decoration: InputDecoration(
+                                  fillColor: const Color(0xc0ffffff),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 4.0, horizontal: 5),
+                                  hintStyle:
+                                      const TextStyle(color: Colors.grey),
+                                  hintText: "Ara",
+                                  focusedBorder: vm.getSearchValue()
+                                      ? border.copyWith(
+                                          borderRadius: const BorderRadius.only(
+                                              topRight: Radius.circular(16),
+                                              topLeft: Radius.circular(16)))
+                                      : border,
+                                  filled: true,
+                                  border: border),
                             ),
-                            children: [
-                              coverWidget(
-                                  onTap: () {}, title: "yerel dosyalar"),
-                              coverWidget(
-                                  onTap: () {}, title: "deezer begeniler"),
-                              coverWidget(
-                                  onTap: () {}, title: "diger calma listesi 1")
-                            ],
-                          )
-                        ],
+                            getBody(vm.getSearchValue(), vm),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -82,24 +71,73 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  Widget getBody(bool condition, PlayerVM vm) {
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 300),
+      child: _body(condition, vm),
+    );
+  }
+
+  Widget _body(bool condition, PlayerVM vm) {
+    if (condition) {
+      return Container(
+        height: 20.h,
+        padding: EdgeInsets.all(2.h),
+        decoration: const BoxDecoration(
+            color: Color(0x7affffff),
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(16),
+                bottomRight: Radius.circular(16))),
+        child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: vm.searchList.length,
+            itemBuilder: (context, i) {
+              return Text(vm.searchList[i].title);
+            }),
+      );
+    } else {
+      return GridView(
+        shrinkWrap: true,
+        padding: EdgeInsets.all(1.h),
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          childAspectRatio: 1,
+          mainAxisSpacing: 2.h,
+          crossAxisSpacing: 3.w,
+          crossAxisCount: 3,
+        ),
+        children: [
+          coverWidget(onTap: () {}, title: "yerel dosyalar"),
+          coverWidget(onTap: () {}, title: "deezer begeniler"),
+          coverWidget(onTap: () {}, title: "diger calma listesi 1")
+        ],
+      );
+    }
+  }
+
   // çalma listesi kapak
   GestureDetector coverWidget(
       {required VoidCallback onTap, required String title}) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 16.h,
-        width: 32.w,
-        padding: EdgeInsets.all(0.5.h),
-        //resim buraya
-        decoration: BoxDecoration(
-            color: colors.surfaceTint,
-            borderRadius: border.borderRadius,
-            shape: BoxShape.rectangle),
-        child: Placeholder(
-          child: Text(title),
-        ),
-      ),
+          height: 16.h,
+          width: 32.w,
+          padding: EdgeInsets.all(0.5.h),
+          decoration: BoxDecoration(
+              color: colors.surfaceTint,
+              borderRadius: border.borderRadius,
+              shape: BoxShape.rectangle),
+          child: Column(
+            children: [
+              Flexible(
+                  flex: 3,
+                  child: SvgPicture.asset(
+                    "assets/images/icons/note.svg",
+                  )),
+              Flexible(child: Text(title))
+            ],
+          )),
     );
   }
 

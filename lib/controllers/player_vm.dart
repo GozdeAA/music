@@ -3,6 +3,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:freechoice_music/models/play_list/play_list_model.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -18,6 +19,7 @@ class PlayerVM extends GetxController {
   RxList<PlayList> playLists = RxList([]);
   RxInt currentIndex = 0.obs;
   RxBool playButton = true.obs;
+  RxBool searchOn = false.obs;
   RxString currentSongName = "".obs;
   final OnAudioQuery _audioQuery = OnAudioQuery();
 
@@ -46,6 +48,10 @@ class PlayerVM extends GetxController {
     }
   }
 
+  bool getSearchValue(){
+    return searchList.isNotEmpty;
+  }
+
   void onSearch(String value) {
     if (files.isNotEmpty && value.length >= 3) {
       for (var i in files) {
@@ -53,9 +59,12 @@ class PlayerVM extends GetxController {
             i.artist != null &&
                 i.artist!.isNotEmpty &&
                 i.artist!.toLowerCase().contains(value)) {
-          searchList.add(i);
+          searchList.addIf(!searchList.contains(i),i);
         }
       }
+    }
+    else{
+      searchList.clear();
     }
   }
 
