@@ -1,13 +1,17 @@
+import 'dart:io';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:freechoice_music/controllers/player_vm.dart';
 import 'package:freechoice_music/pages/player.dart';
+import 'package:freechoice_music/pages/song_list.dart';
 import 'package:freechoice_music/utilities/extensions/sizer.dart';
 import 'package:freechoice_music/utilities/widgets/custom_widget/background_grad.dart';
 import 'package:get/get.dart';
-
+import '../models/play_list/play_list_model.dart';
 import '../utilities/constants/consts.dart';
 
 class HomePage extends StatelessWidget {
@@ -54,6 +58,9 @@ class HomePage extends StatelessWidget {
                                       : border,
                                   filled: true,
                                   border: border),
+                            ),
+                            SizedBox(
+                              height: 2.h,
                             ),
                             getBody(vm.getSearchValue(), vm),
                           ],
@@ -106,18 +113,33 @@ class HomePage extends StatelessWidget {
           crossAxisSpacing: 3.w,
           crossAxisCount: 3,
         ),
-        children: [
-          coverWidget(onTap: () {}, title: "yerel dosyalar"),
-          coverWidget(onTap: () {}, title: "deezer begeniler"),
-          coverWidget(onTap: () {}, title: "diger calma listesi 1")
-        ],
+        children: playListWidgets(vm.playLists, vm),
       );
     }
   }
 
+  List<Widget> playListWidgets(List<PlayList> list, PlayerVM vm) {
+    List<Widget> playListWidgets = [];
+    for (var i in list) {
+      playListWidgets.add(coverWidget(
+          onTap: () {
+            Get.to(
+              const SongListPage(),
+              arguments: i,
+            );
+            vm.getFiles();
+          },
+          image: i.picture,
+          title: i.title ?? ""));
+    }
+
+    playListWidgets.add(createPlayListWidget());
+    return playListWidgets;
+  }
+
   // çalma listesi kapak
   GestureDetector coverWidget(
-      {required VoidCallback onTap, required String title}) {
+      {required VoidCallback onTap, required String title, String? image}) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -130,6 +152,8 @@ class HomePage extends StatelessWidget {
               shape: BoxShape.rectangle),
           child: Column(
             children: [
+              if (image != null && image.isNotEmpty)
+                Image.file(File(image)), // kaynak file degil
               Flexible(
                   flex: 3,
                   child: SvgPicture.asset(
@@ -137,6 +161,35 @@ class HomePage extends StatelessWidget {
                   )),
               Flexible(child: Text(title))
             ],
+          )),
+    );
+  }
+
+  GestureDetector createPlayListWidget() {
+    return GestureDetector(
+      onTap: () {
+        //todo create playlist dialog widget which only takes playlist name
+        //saves into local storage
+        showDialog(
+            context: Get.context!,
+            builder: (context) => const AlertDialog(
+                  content: Center(
+                    child: Text("hi"),
+                  ),
+                ));
+      },
+      child: Container(
+          height: 16.h,
+          width: 32.w,
+          padding: EdgeInsets.all(0.5.h),
+          decoration: BoxDecoration(
+              color: colors.surfaceTint.withOpacity(0.6),
+              borderRadius: border.borderRadius,
+              shape: BoxShape.rectangle),
+          child: Icon(
+            Icons.add,
+            size: 8.h,
+            color: const Color(0x4c091c27),
           )),
     );
   }

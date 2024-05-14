@@ -16,7 +16,17 @@ class PlayerVM extends GetxController {
   RxList<SongModel> files = <SongModel>[].obs;
   RxList<SongModel> query = <SongModel>[].obs;
   RxList<SongModel> searchList = <SongModel>[].obs;
-  RxList<PlayList> playLists = RxList([]);
+  RxList<PlayList> playLists = RxList([
+    PlayList(id: "0", title: "List 1"),
+    PlayList(
+      id: "1",
+      title: "List 2",
+    ),
+    PlayList(
+      id: "2",
+      title: "List 3",
+    )
+  ]);
   RxInt currentIndex = 0.obs;
   RxBool playButton = true.obs;
   RxBool searchOn = false.obs;
@@ -48,7 +58,7 @@ class PlayerVM extends GetxController {
     }
   }
 
-  bool getSearchValue(){
+  bool getSearchValue() {
     return searchList.isNotEmpty;
   }
 
@@ -59,19 +69,23 @@ class PlayerVM extends GetxController {
             i.artist != null &&
                 i.artist!.isNotEmpty &&
                 i.artist!.toLowerCase().contains(value)) {
-          searchList.addIf(!searchList.contains(i),i);
+          searchList.addIf(!searchList.contains(i), i);
         }
       }
-    }
-    else{
+    } else {
       searchList.clear();
     }
   }
 
   Future getFiles() async {
-    files.value = await _audioQuery.querySongs();
-    query.value = files;
-    printInfo(info: "bulunan dosya sayısı: ${files.length}");
+    if (Get.arguments != null && Get.arguments is PlayList) {
+      query.clear();
+      query.value = Get.arguments;
+    } else {
+      files.value = await _audioQuery.querySongs();
+      query.value = files;
+      printInfo(info: "bulunan dosya sayısı: ${files.length}");
+    }
   }
 
   Future getPlayLists() async {}

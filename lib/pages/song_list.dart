@@ -27,41 +27,48 @@ class SongListPage extends StatelessWidget {
           ),
           body: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: AnimatedList(
-              key: listKey,
-              initialItemCount: vm.query.length,
-              shrinkWrap: true,
-              controller: scrollController,
-              itemBuilder: (context, i, animation) {
-                RxDouble newScale = 1.0.obs;
-                //newScale.value = (i != 0 && i % 8 == 0) ? 0.9 : 1;
-                scrollController.addListener(() async {
-                  var a = getPos(listKey);
-                  if ((i != 0 && i % 8 == 0) && a.dy == 88) {
-                    newScale.value = 0.9;
-                    getPos(listKey);
-                    newScale.value = 1;
-                  } else if ((i != 0 && i % 8 == 0) && a.dy != 88) {
-                    newScale.value = 1.0;
-                  }
-                });
-                //  print(a.dy);
-
-                return Obx(
-                  () => AnimatedScale(
-                      duration: const Duration(seconds: 1),
-                      scale: newScale.value,
-                      child: songCard(
-                        title: vm.query[i].displayName,
-                        onPressed: () {
+            child: vm.query.isEmpty
+                ? Center(
+                    child: Text(
+                      "No songs available",
+                      style: TextStyle(color: Theme.of(context).canvasColor),
+                    ),
+                  )
+                : AnimatedList(
+                    key: listKey,
+                    initialItemCount: vm.query.length,
+                    shrinkWrap: true,
+                    controller: scrollController,
+                    itemBuilder: (context, i, animation) {
+                      RxDouble newScale = 1.0.obs;
+                      //newScale.value = (i != 0 && i % 8 == 0) ? 0.9 : 1;
+                      scrollController.addListener(() async {
+                        var a = getPos(listKey);
+                        if ((i != 0 && i % 8 == 0) && a.dy == 88) {
+                          newScale.value = 0.9;
+                          getPos(listKey);
+                          newScale.value = 1;
+                        } else if ((i != 0 && i % 8 == 0) && a.dy != 88) {
                           newScale.value = 1.0;
-                        },
-                        subtitle: vm.query[i].artist ?? "",
-                      )),
-                );
-                // return songCard(title: "title", subtitle: "subtitle");
-              },
-            ),
+                        }
+                      });
+                      //  print(a.dy);
+
+                      return Obx(
+                        () => AnimatedScale(
+                            duration: const Duration(seconds: 1),
+                            scale: newScale.value,
+                            child: songCard(
+                              title: vm.query[i].displayName,
+                              onPressed: () {
+                                newScale.value = 1.0;
+                              },
+                              subtitle: vm.query[i].artist ?? "",
+                            )),
+                      );
+                      // return songCard(title: "title", subtitle: "subtitle");
+                    },
+                  ),
           ),
         ),
       ],
