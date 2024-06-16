@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:freechoice_music/services/abstract/i_user_service.dart';
+import 'package:freechoice_music/repository/services/abstract/i_user_service.dart';
 import 'package:freechoice_music/utilities/network/endpoints.dart';
 import 'package:get_it/get_it.dart';
 import 'package:webview_flutter/webview_flutter.dart';

@@ -62,7 +62,24 @@ class HomePage extends StatelessWidget {
                             SizedBox(
                               height: 2.h,
                             ),
-                            getBody(vm.getSearchValue(), vm),
+                            if (!vm.permissionsGranted.value)
+                              Column(
+                                children: [
+                                  Text(
+                                    "Devam etmek için dosya erişim izni vermeniz gerekmektedir.",
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor),
+                                  ),
+                                  TextButton(
+                                      onPressed: () {
+                                        vm.askPermission();
+                                      },
+                                      child: const Text(
+                                          "İzin için buraya tıklayınız.")),
+                                ],
+                              ),
+                            if (vm.permissionsGranted.value)
+                              getBody(vm.getSearchValue(), vm),
                           ],
                         ),
                       ),

@@ -1,14 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:freechoice_music/services/abstract/i_user_service.dart';
+import 'package:freechoice_music/repository/services/abstract/i_user_service.dart';
 import 'package:freechoice_music/utilities/network/endpoints.dart';
 import 'package:freechoice_music/utilities/network/network_helper.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import '../../models/play_list/play_list_model.dart';
-import '../../utilities/helpers/user/session.dart';
-import '../../models/user/user.dart';
+import '../../../models/play_list/play_list_model.dart';
+import '../../../utilities/helpers/user/session.dart';
+import '../../../models/user/user.dart';
 
 class UserService extends IUserService {
   @override

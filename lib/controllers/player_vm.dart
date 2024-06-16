@@ -2,6 +2,8 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:freechoice_music/models/play_list/play_list_model.dart';
+import 'package:freechoice_music/repository/local/storage_helper.dart';
+import 'package:freechoice_music/repository/local/storage_keys.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -30,8 +32,13 @@ class PlayerVM extends GetxController {
   RxInt currentIndex = 0.obs;
   RxBool playButton = true.obs;
   RxBool searchOn = false.obs;
+  RxBool permissionsGranted = false.obs;
+
   RxString currentSongName = "".obs;
   final OnAudioQuery _audioQuery = OnAudioQuery();
+  final bool? firstUse;
+
+  PlayerVM({this.firstUse});
 
   @override
   Future<void> onReady() async {
@@ -50,10 +57,23 @@ class PlayerVM extends GetxController {
   askPermission() async {
     var storage = await Permission.storage.request();
     var library = await Permission.mediaLibrary.request();
+    if (firstUse != null && firstUse!) {
+      permissionsGranted.value = false;
 
-    if (storage.isPermanentlyDenied || library.isPermanentlyDenied) {
-      await openAppSettings();
+      StorageHelper.instance.writeValue(key: SKeys.firstUse, value: false);
+      if (storage.isPermanentlyDenied || library.isPermanentlyDenied) {
+        await openAppSettings();
+      }
+      /*else if (storage.isGranted && library.isGranted) {
+        permissionsGranted.value = true;
+        getFiles();
+      } */
+      else {
+        permissionsGranted.value = true;
+        getFiles();
+      }
     } else {
+      permissionsGranted.value = true;
       getFiles();
     }
   }
@@ -82,6 +102,9 @@ class PlayerVM extends GetxController {
       query.clear();
       query.value = Get.arguments;
     } else {
+      if (!await _audioQuery.permissionsStatus()) {
+        await _audioQuery.permissionsRequest(retryRequest: true);
+      }
       files.value = await _audioQuery.querySongs();
       query.value = files;
       printInfo(info: "bulunan dosya sayısı: ${files.length}");
