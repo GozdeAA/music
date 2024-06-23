@@ -1,11 +1,12 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:freechoice_music/models/play_list/play_list_model.dart';
 import 'package:freechoice_music/repository/local/storage_helper.dart';
 import 'package:freechoice_music/repository/local/storage_keys.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -14,6 +15,7 @@ import '../utilities/constants/enums.dart';
 class PlayerVM extends GetxController {
   SwiperController swiperController = SwiperController();
   TextEditingController searchController = TextEditingController();
+  TextEditingController playlistName = TextEditingController();
   AudioPlayer player = AudioPlayer();
   RxList<SongModel> files = <SongModel>[].obs;
   RxList<SongModel> query = <SongModel>[].obs;
@@ -43,6 +45,7 @@ class PlayerVM extends GetxController {
   @override
   Future<void> onReady() async {
     await askPermission();
+    await getPlayLists();
     await _audioQuery.permissionsRequest();
     super.onReady();
   }
@@ -111,7 +114,23 @@ class PlayerVM extends GetxController {
     }
   }
 
-  Future getPlayLists() async {}
+  /// get previously saved playlists
+  Future getPlayLists() async {
+    var storage = GetStorage(SKeys.playList);
+    var lists = storage.read("0");
+    if (lists != null && lists is List<PlayList>) {
+      playLists.value = lists;
+    }
+  }
+
+  /// create a new playlist
+  /// and save it to local storage
+  savePlaylist() {
+    PlayList playList = PlayList(title: playlistName.text);
+    var storage = GetStorage(SKeys.playList);
+    playLists.add(playList);
+    storage.write("0", playLists);
+  }
 
   next10Seconds() async {
     Duration? dur = await player.getCurrentPosition();
@@ -141,7 +160,7 @@ class PlayerVM extends GetxController {
     }
   }
 
-  testplay(PlayType p, {int? i}) async {
+  play(PlayType p, {int? i}) async {
     try {
       //files.shuffle();
       if (p == PlayType.next) {

@@ -150,7 +150,7 @@ class HomePage extends StatelessWidget {
           title: i.title ?? ""));
     }
 
-    playListWidgets.add(createPlayListWidget());
+    playListWidgets.add(createPlayListWidget(vm));
     return playListWidgets;
   }
 
@@ -182,16 +182,50 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  GestureDetector createPlayListWidget() {
+
+  //TODO edit textfield decor
+  //todo add validator
+  GestureDetector createPlayListWidget(PlayerVM vm) {
     return GestureDetector(
       onTap: () {
-        //todo create playlist dialog widget which only takes playlist name
-        //saves into local storage
         showDialog(
             context: Get.context!,
-            builder: (context) => const AlertDialog(
-                  content: Center(
-                    child: Text("hi"),
+            builder: (context) => AlertDialog(
+                  actions: [
+                    TextButton(
+                        onPressed: () => Get.back(),
+                        child: Text(
+                          "Cancel",
+                          style: TextStyle(color: Get.theme.primaryColorLight),
+                        )),
+                    TextButton(
+                        onPressed: () {
+                          vm.savePlaylist();
+                        },
+                        child: Text(
+                          "OK",
+                          style: TextStyle(color: Get.theme.primaryColorDark),
+                        ))
+                  ],
+                  content: SingleChildScrollView(
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Text("Create a new playlist"),
+                          TextFormField(
+                            controller: vm.playlistName,
+                            decoration: const InputDecoration(
+                                fillColor: Color(0xc0ffffff),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 4.0, horizontal: 5),
+                                hintStyle: TextStyle(color: Colors.grey),
+                                hintText: "Playlist name",
+                                filled: true,
+                                border: border),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ));
       },

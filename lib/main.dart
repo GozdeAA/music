@@ -44,7 +44,7 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       theme: LightTheme().themeData,
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.light,
       builder: EasyLoading.init(),
       home: const Splash(),
     );

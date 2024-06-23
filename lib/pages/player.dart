@@ -87,7 +87,7 @@ class PlayerPage extends StatelessWidget {
                         if (vm.query.isNotEmpty) {
                           vm.currentIndex.value = i;
                           //vm.checkPlayingStatus();
-                          vm.testplay(i: i, PlayType.current);
+                          vm.play(i: i, PlayType.current);
                         }
                       },
                       loop: false,
@@ -160,7 +160,7 @@ class PlayerPage extends StatelessWidget {
             children: [
               CustomIconButton(
                   assetName: "skip_previous",
-                  onPressed: () => vm.testplay(PlayType.previous)),
+                  onPressed: () => vm.play(PlayType.previous)),
               const Spacer(),
               CustomIconButton(
                   assetName: "pre", onPressed: () => vm.pre10Seconds()),
@@ -181,7 +181,7 @@ class PlayerPage extends StatelessWidget {
               const Spacer(),
               CustomIconButton(
                   assetName: "skip_next",
-                  onPressed: () => vm.testplay(PlayType.next)),
+                  onPressed: () => vm.play(PlayType.next)),
             ],
           ),
           SizedBox(
@@ -225,7 +225,7 @@ class PlayerPage extends StatelessWidget {
           height: 24.sp,
         ),
         onTap: () {
-          vm.testplay(PlayType.current);
+          vm.play(PlayType.current);
           vm.playButton.value = false;
         });
   }
